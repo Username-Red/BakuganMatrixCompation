@@ -5,8 +5,8 @@ const doc = {
     title: 'Bakugan Matrix Companion API',
     description: 'API for managing Bakugan collections, decks, and maybe battles.',
   },
-  host: 'localhost:3000',
-  schemes: ['http'],
+  host: 'bakuganmatrixcompation.onrender.com/api-docs/',
+  schemes: ['https'],
 };
 
 const outputFile = './swagger.json';
