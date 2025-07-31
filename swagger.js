@@ -5,7 +5,7 @@ const doc = {
     title: 'Bakugan Matrix Companion API',
     description: 'API for managing Bakugan collections, decks, and maybe battles.',
   },
-  host: 'bakuganmatrixcompation.onrender.com/api-docs/',
+  host: 'bakuganmatrixcompation.onrender.com',
   schemes: ['https'],
 };
 
