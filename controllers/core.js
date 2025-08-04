@@ -26,7 +26,7 @@ exports.getCoreById = async (req, res) => {
 
 
 exports.createCore = async (req, res) => {
-    const core = new core({
+    const core = new Core({
         type: req.body.type,
         boost: req.body.boost
     })
