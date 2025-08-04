@@ -40,7 +40,7 @@ exports.createCore = async (req, res) => {
 
 exports.updateCore = async (req, res) => {
   try {
-    const updatedCore = await core.findByIdAndUpdate(
+    const updatedCore = await Core.findByIdAndUpdate(
       req.params._id, 
       {
         type: req.body.type,
@@ -61,7 +61,7 @@ exports.updateCore = async (req, res) => {
 
 exports.deleteCore = async (req, res) => {
   try {
-    const deletedCore = await core.findByIdAndDelete(req.params._id);
+    const deletedCore = await Core.findByIdAndDelete(req.params._id);
 
     if (!deletedCore) {
       return res.status(404).json({ message: 'core not found' });
