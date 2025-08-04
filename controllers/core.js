@@ -10,6 +10,20 @@ exports.getCores = async (req, res) => {
     }
 };
 
+exports.getCoreById = async (req, res) => {
+  try {
+    const core = await Core.findById(req.params._id);
+
+    if (!core) {
+      return res.status(404).json({ message: 'Core not found' });
+    }
+
+    res.status(200).json(core);
+  } catch (err) {
+    res.status(400).json({ message: 'Invalid ID format or error retrieving Core' });
+  }
+};
+
 
 exports.createCore = async (req, res) => {
     const core = new core({

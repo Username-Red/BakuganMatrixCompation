@@ -13,9 +13,11 @@ app.use(express.json());
 const bakuganRoutes = require('./routes/bakugan');
 const gateRoutes = require('./routes/gate')
 const coreRoutes = require('./routes/core')
+const deckRoutes = require('./routes/deck')
 app.use('/bakugan', bakuganRoutes);
 app.use('/gate', gateRoutes);
 app.use('/core', coreRoutes);
+app.use('/deck', deckRoutes);
 
 // Swagger Docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));

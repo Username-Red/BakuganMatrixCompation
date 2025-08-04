@@ -10,6 +10,20 @@ exports.getBakugan = async (req, res) => {
     }
 };
 
+exports.getBakuganById = async (req, res) => {
+  try {
+    const bakugan = await Bakugan.findById(req.params._id);
+
+    if (!bakugan) {
+      return res.status(404).json({ message: 'Bakugan not found' });
+    }
+
+    res.status(200).json(bakugan);
+  } catch (err) {
+    res.status(400).json({ message: 'Invalid ID format or error retrieving Bakugan' });
+  }
+};
+
 
 exports.createBakugan = async (req, res) => {
     const bakugan = new Bakugan({

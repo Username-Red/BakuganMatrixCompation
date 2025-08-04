@@ -10,6 +10,20 @@ exports.getGate = async (req, res) => {
   }
 };
 
+exports.getGateById = async (req, res) => {
+  try {
+    const gate = await Gate.findById(req.params._id);
+
+    if (!gate) {
+      return res.status(404).json({ message: 'Gate not found' });
+    }
+
+    res.status(200).json(gate);
+  } catch (err) {
+    res.status(400).json({ message: 'Invalid ID format or error retrieving Gate' });
+  }
+};
+
 exports.createGate = async (req, res) => {
   const gate = new Gate({
     type: req.body.type,
