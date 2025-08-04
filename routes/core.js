@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const { getCore, createCore, updateCore, deleteCore } = require('../controllers/core');
+const { getCores, createCore, updateCore, deleteCore } = require('../controllers/core');
 const { isAuthenticated } = require("../middleware/authenticate")
-router.get('/', getCore);
+router.get('/', getCores);
 router.post('/', createCore);
 router.put('/:_id',  updateCore);
 router.delete('/:_id',  deleteCore);
