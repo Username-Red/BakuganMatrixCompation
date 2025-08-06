@@ -18,6 +18,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.5",
     "passport": "^0.7.0",
+    "passport-github2": "^0.1.12",
     "swagger": "^0.7.5",
     "swagger-autogen": "^2.23.7",
     "swagger-jsdoc": "^6.2.8",
