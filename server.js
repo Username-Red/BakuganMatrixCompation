@@ -1,3 +1,13 @@
+
+const bodyParser = require("body-parser")
+
+const passport = require('passport');
+const session = require('express-session');
+const GitHubStrategy = require('passport-github2').Strategy;
+const dotenv = require('dotenv');
+dotenv.config();
+// cors gave me problems last time, this time I'll make sure it works.
+const cors = require('cors'); 
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
