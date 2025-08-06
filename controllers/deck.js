@@ -4,9 +4,9 @@ const ObjectId = require("mongodb").ObjectId;
 exports.getDecks = async (req, res) => {
     try {
         const allDecks = await Deck.find()
-            .populate('bakugan')
-            .populate('gates')
-            .populate('cores');
+            // .populate('bakugan')
+            // .populate('gates')
+            // .populate('cores');
 
         res.json(allDecks);
     } catch (err) {

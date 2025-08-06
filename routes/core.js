@@ -5,9 +5,9 @@ const { getCores, getCoreById, createCore, updateCore, deleteCore } = require('.
 const { isAuthenticated } = require("../middleware/authenticate")
 router.get('/', getCores);
 router.get('/:_id', getCoreById);
-router.post('/', createCore);
-router.put('/:_id',  updateCore);
-router.delete('/:_id',  deleteCore);
+router.post('/', isAuthenticated, createCore);
+router.put('/:_id', isAuthenticated, updateCore);
+router.delete('/:_id', isAuthenticated, deleteCore);
 
 
 module.exports = router;

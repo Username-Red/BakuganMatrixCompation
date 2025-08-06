@@ -5,9 +5,9 @@ const { getGate, getGateById, createGate, updateGate, deleteGate } = require('..
 const { isAuthenticated } = require("../middleware/authenticate")
 router.get('/', getGate);
 router.get('/:_id', getGateById);
-router.post('/', createGate);
-router.put('/:_id',  updateGate);
-router.delete('/:_id',  deleteGate);
+router.post('/', isAuthenticated, createGate);
+router.put('/:_id', isAuthenticated, updateGate);
+router.delete('/:_id', isAuthenticated, deleteGate);
 
 
 module.exports = router;
