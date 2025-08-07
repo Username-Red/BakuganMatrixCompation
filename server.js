@@ -1,80 +1,78 @@
-
-const bodyParser = require("body-parser")
-
-const passport = require('passport');
+const express = require('express');
+const app = express();
 const session = require('express-session');
+const passport = require('passport');
+const cors = require('cors');
+const bodyParser = require("body-parser");
 const GitHubStrategy = require('passport-github2').Strategy;
 const dotenv = require('dotenv');
 dotenv.config();
 require('dotenv').config();
-const express = require('express');
+
+// MongoDB + Swagger
 const mongoose = require('mongoose');
-const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger.json');
 
-const app = express();
+// Middleware
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(session({
+  secret: "secret",
+  resave: false,
+  saveUninitialized: true,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
+// Headers
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Z-Key, Authorization"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "POST, GET, PUT, PATCH, OPTIONS, DELETE"
+  );
+  next();
+});
+app.use(cors({methods: ["GET","POST","DELETE","UPDATE","PUT","PATCH"]}));
+app.use(cors({origin: "*"}));
 
-
-// Swagger Docs
+// Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
-app
-  .use(bodyParser.json())
-  .use(session({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: true,
-  }))
 
-  .use(passport.initialize())
-  .use(passport.session())
-  .use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*")
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-Width, Content-Type, Accept, Z-Key, Authorization"
-    )
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "POST, GET, PUT, PATCH, OPTIONS, DELETE"
-    )
-    next()
-  })
-  .use(cors({methods: ["GET","POST","DELETE","UPDATE","PUT","PATCH"]}))
-  .use(cors({origin: "*"}))
-  .use("/", require("./routes/index.js"))
+// 🟡 Important: Routes AFTER middleware setup
+app.use("/", require("./routes/index.js"));
+app.use('/bakugan', require('./routes/bakugan'));
+app.use('/gate', require('./routes/gate'));
+app.use('/core', require('./routes/core'));
+app.use('/deck', require('./routes/deck'));
 
-  passport.use(new GitHubStrategy({
+// Passport GitHub strategy
+passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: process.env.CALLBACK_URL,
   },
   function(accessToken, refreshToken, profile, done) {
     return done(null, profile);
-  }))
+  }
+));
 
 passport.serializeUser((user, done) => {
   done(null, user);
 });
-
 passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-// Routes
-const bakuganRoutes = require('./routes/bakugan');
-const gateRoutes = require('./routes/gate')
-const coreRoutes = require('./routes/core')
-const deckRoutes = require('./routes/deck')
-app.use('/bakugan', bakuganRoutes);
-app.use('/gate', gateRoutes);
-app.use('/core', coreRoutes);
-app.use('/deck', deckRoutes);
-
-app.get('/', (req, res) => res.send(req.session.user != undefined ? `Logged in as ${req.session.user.displayName}` : 'Logged Out'));
+app.get('/', (req, res) => {
+  res.send(req.session.user != undefined ? `Logged in as ${req.session.user.displayName}` : 'Logged Out');
+});
 
 app.get('/github/callback', passport.authenticate('github', {
   failureRedirect: '/api-docs', session: false
@@ -84,7 +82,7 @@ app.get('/github/callback', passport.authenticate('github', {
   res.redirect('/');
 });
 
-// MongoDB Connect
+// MongoDB connect
 mongoose.connect(process.env.MONGO_URL)
   .then(() => {
     console.log('MongoDB connected');
